@@ -12,7 +12,7 @@ When you can't avoid it.
 
 ## Features of a well-done copy
 
-What do you, the fututure maintainer of some code, want to see when you encounter some code that was copied from another repo?
+What do you, the future maintainer of some code, want to see when you encounter some code that was copied from another repo?
 
 You want to be able to **make local changes**, which is probably why you forked the code in the first place.
 
