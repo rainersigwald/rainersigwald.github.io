@@ -304,4 +304,8 @@ ef18410||
 
 ## Recovering from past mistakes
 
-If you have some copied code in your repo that _wasn't_ done this way, no proble You can do this retroactively, including getting all of the let-get-do-merges-for-you benefits from the update. It only costs one extra commit.
+If you have some copied code in your repo that _wasn't_ done this way, no problem! You can do this retroactively, including getting all of the let-get-do-merges-for-you benefits from the update. It only costs one extra commit.
+
+First, figure out the origin of the copied code. Hopefully it's in the commit message or a comment somewhere.
+
+After finding the source, do the 
