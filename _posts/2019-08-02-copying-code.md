@@ -6,6 +6,9 @@ title:  "Copying code the right way"
 Sometimes the most pragmatic way to solve a problem is by copying code--forking a small subset of some other repo into your codebase.
 Doing some Git&nbsp;Gymnastics™ can help your future self when you inevitably need to take updates of the code you're copying.
 
+* TOC
+{:toc}
+
 ## When to copy
 
 When you can't avoid it.
