@@ -1,3 +1,9 @@
 _site
 .sass-cache
 .jekyll-metadata
+
+.bundle
+vendor/
+
+# Normally this should be committed, but I don't want to mess with GitHub Pages
+Gemfile.lock
