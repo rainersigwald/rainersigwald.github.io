@@ -3,7 +3,7 @@ layout: post
 title:  "Copying code the right way"
 ---
 
-Sometimes the most pragmatic way to solve a problem is by copying code--forking a small subset of some other repo into your codebase.
+Sometimes the most pragmatic way to solve a problem is by copying code--forking a subset of some other repo into your codebase.
 Doing some Git&nbsp;Gymnastics™ can help your future self when you inevitably need to take updates of the code you're copying.
 
 * TOC
@@ -308,4 +308,131 @@ If you have some copied code in your repo that _wasn't_ done this way, no proble
 
 First, figure out the origin of the copied code. Hopefully it's in the commit message or a comment somewhere.
 
-After finding the source, do the 
+After finding the source, create an orphan branch exactly as you would for a new import, and copy in the source code (to the same relative path as it is in your mainline).
+Use the version of the source that was available at the time of the first commit to your repo, not the latest available in the source repo.
+
+Create a new branch starting at the point where the code was first introduced into your repo. Then merge the clean copy of the code in without changing any code:
+
+```bash
+git merge -s ours branch-with-only-imported-source
+```
+
+Specifying the [`ours` merge strategy](https://git-scm.com/docs/git-merge#_merge_strategies) means that this commit will have the exact same contents as the commit in your history, but the merge means it will be parented to the clean copy as well as the other code. This comes in handy after updating.
+
+Now you can follow the standard procedure to update the copied code. When Git merges the updated code with the copy in your tree, it will see the past merge and diff from the original code and can offer its usual help merging.
+
+<meta charset="UTF-8">
+<style type="text/css">
+        @font-face {
+            font-family: "Atlassian Icons";
+            src: url(http://aui-cdn.atlassian.com/aui-adg/5.9.6/css/fonts/atlassian-icons.eot);
+            src: url(http://aui-cdn.atlassian.com/aui-adg/5.9.6/css/fonts/atlassian-icons.eot?#iefix) format("embedded-opentype"), url(http://aui-cdn.atlassian.com/aui-adg/5.9.6/css/fonts/atlassian-icons.woff) format("woff"), url(http://aui-cdn.atlassian.com/aui-adg/5.9.6/css/fonts/atlassian-icons.ttf) format("truetype"), url(http://aui-cdn.atlassian.com/aui-adg/5.9.6/css/fonts/atlassian-icons.svg#atlassian-icons) format("svg");
+            font-weight: normal;
+            font-style: normal;
+        }
+        #bit-booster-tbl, #bit-booster-tbl * { line-height: 1.0; font-family: monospace; border-spacing: 0; margin:0; border: 0; padding: 0; font-size: 16px;}
+        #bit-booster-tbl span.icon { font-family: "Atlassian Icons"; font-size: 16px; padding-left: 2px; }
+        #bit-booster-tbl td.d { font-style: italic; color: darkgray; padding-left: 0.7em; white-space: nowrap; }
+        #bit-booster-tbl td.commit { padding: 4px 1px; }
+</style>
+<!-- http://bit-booster.com/graph.html  DATA WAS:
+bbf10e7|836c728 5864c02| (HEAD -> dev)
+5864c02|96392fd cec3e95| (update-imported-code)
+cec3e95|71012f2| (updated-import)
+96392fd|43c61ac 71012f2|
+71012f2|| (reconstruct-import)
+836c728|43c61ac|
+43c61ac|3b7ae0b|
+3b7ae0b||
+
+-->
+<table id="bit-booster-tbl" style="width: 1%;">
+    <tbody>
+        <tr>
+            <td rowspan="99999" style="vertical-align: top;">
+                <svg
+                    xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="189" text-rendering="optimizeLegibility" style="border: 0px; margin: 0px; padding: 0;" id="bit-booster">
+                    <path d="M9,11C8,37.25,25,19.75,24,35" stroke-width="2" stroke-opacity="1" opacity="1" fill="none" stroke="#79c753"></path>
+                    <path d="M24,35C23,61.25,40,43.75,39,59" stroke-width="2" stroke-opacity="1" opacity="1" fill="none" stroke="#f7786b"></path>
+                    <path d="M39,83C40,109.25,23,91.75,24,107" stroke-width="2" stroke-opacity="1" opacity="1" fill="none" stroke="#f7786b"></path>
+                    <path d="M39,131C40,157.25,8,139.75,9,155" stroke-width="2" stroke-opacity="1" opacity="1" fill="none" stroke="#f7786b"></path>
+                    <path d="M24,83C23,109.25,40,91.75,39,107" stroke-width="2" stroke-opacity="1" opacity="1" fill="none" stroke="#f7786b"></path>
+                    <path d="M9,155L9,179" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#034f84"></path>
+                    <path d="M9,131L9,155" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#034f84"></path>
+                    <path d="M39,107L39,131" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#f7786b"></path>
+                    <path d="M24,83L24,107" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#79c753"></path>
+                    <path d="M39,59L39,83" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#f7786b"></path>
+                    <path d="M24,35L24,83" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#79c753"></path>
+                    <path d="M39,59L39,59" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#f7786b"></path>
+                    <path d="M9,11L9,131" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#034f84"></path>
+                    <path d="M24,35L24,35" stroke-width="2" stroke-opacity="1" opacity="1" stroke="#79c753"></path>
+                    <circle id="C_3b7ae0b" cx="9" cy="179" r="4" fill="#034f84" stroke="none"></circle>
+                    <circle id="C_43c61ac" cx="9" cy="155" r="4" fill="#034f84" stroke="none"></circle>
+                    <circle id="C_836c728" cx="9" cy="131" r="4" fill="#034f84" stroke="none"></circle>
+                    <circle id="C_71012f2" cx="24" cy="107" r="4" fill="#79c753" stroke="none"></circle>
+                    <circle id="C_96392fd" cx="24" cy="83" r="4" fill="#79c753" stroke="none"></circle>
+                    <circle id="C_cec3e95" cx="39" cy="59" r="4" fill="#f7786b" stroke="none"></circle>
+                    <circle id="C_5864c02" cx="24" cy="35" r="4" fill="#79c753" stroke="none"></circle>
+                    <circle id="C_bbf10e7" cx="9" cy="11" r="4" fill="#034f84" stroke="none"></circle>
+                </svg>
+            </td>
+            <td style="width: 99%; vertical-align: top;"></td>
+        </tr>
+        <tr id="T_bbf10e7" data-commitid="bbf10e7">
+            <td class="commit">bbf10e7</td>
+            <td class="d"> HEAD -&gt; dev
+                <span class="icon"></span>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_5864c02" data-commitid="5864c02">
+            <td class="commit">5864c02</td>
+            <td class="d"> update-imported-code
+                <span class="icon"></span>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_cec3e95" data-commitid="cec3e95">
+            <td class="commit">cec3e95</td>
+            <td class="d"> updated-import
+                <span class="icon"></span>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_96392fd" data-commitid="96392fd">
+            <td class="commit">96392fd</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_71012f2" data-commitid="71012f2">
+            <td class="commit">71012f2</td>
+            <td class="d"> reconstruct-import
+                <span class="icon"></span>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_836c728" data-commitid="836c728">
+            <td class="commit">836c728</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_43c61ac" data-commitid="43c61ac">
+            <td class="commit">43c61ac</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="T_3b7ae0b" data-commitid="3b7ae0b">
+            <td class="commit">3b7ae0b</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
